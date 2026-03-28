@@ -231,7 +231,7 @@
   <div class="shape s3"></div>
 
   <div class="hero-content">
-    <div class="hero-badge">🛡️ {{ settings.hero_badge or '' }}</div>
+    <div class="hero-badge">🛡️ {{ settings.hero_badge or '50 000+ пользователей' }}</div>
 
     <h1 class="hero-title">
       {{ settings.hero_title or 'Ваша защита' }}<br>
@@ -255,7 +255,7 @@
 
     <div class="stats">
       <div class="stat">
-        <div class="stat-val"><span class="counter" data-target="3">0</span>+</div>
+        <div class="stat-val"><span class="counter" data-target="50000">0</span>+</div>
         <div class="stat-lbl">Пользователей</div>
       </div>
       <div class="stat">
@@ -372,9 +372,9 @@
         <li>⚡ {{ plan.speed }}</li>
       </ul>
       {% if user %}
-        <a href="#" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Выбрать</span></a>
+        <button onclick="openDlModal('{{ plan.name }}')" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">📲 Подключить</span></button>
       {% else %}
-        <button onclick="openLoginModal()" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Войти и выбрать</span></button>
+        <button onclick="openLoginModal()" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Войти и подключить</span></button>
       {% endif %}
     </div>
     {% endfor %}
@@ -389,7 +389,7 @@
     <h2 class="cta-title">Защититесь прямо сейчас</h2>
     <p class="cta-sub">Пробный период бесплатно. Отмена в любой момент.</p>
     <div class="cta-btns">
-      <a href="/pricing" class="btn btn-primary"><span class="btn-text">Начать бесплатно 🚀</span></a>
+      <button onclick="openDlModal()" class="btn btn-primary"><span class="btn-text">Начать бесплатно 🚀</span></button>
       <button onclick="openLoginModal()" class="btn btn-ghost"><span class="btn-text">Войти через Telegram</span></button>
     </div>
   </div>

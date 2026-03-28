@@ -114,7 +114,7 @@
         {% for f in plan.features|from_json %}<li><span class="ck">✓</span>{{ f }}</li>{% endfor %}
       </ul>
       {% if user %}
-        <a href="#" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Подключить</span></a>
+        <button onclick="openDlModal('{{ plan.name }}')" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">📲 Подключить</span></button>
       {% else %}
         <button onclick="openLoginModal()" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Войти и подключить</span></button>
       {% endif %}

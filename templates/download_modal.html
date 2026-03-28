@@ -1,0 +1,241 @@
+{# ══════════════════════════════════════════════════════
+   Download Modal — include once in base or index/pricing
+   ══════════════════════════════════════════════════════ #}
+
+<!-- ══ DOWNLOAD MODAL ══════════════════════════════════ -->
+<div class="overlay" id="dlModal">
+  <div class="modal dl-modal" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeDlModal()" aria-label="Закрыть">✕</button>
+
+    <!-- Header -->
+    <div class="dl-header">
+      <div class="dl-app-icon">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <rect width="36" height="36" rx="10" fill="url(#dlGrad)"/>
+          <defs>
+            <linearGradient id="dlGrad" x1="0" y1="0" x2="36" y2="36">
+              <stop offset="0%" stop-color="var(--primary)"/>
+              <stop offset="100%" stop-color="var(--accent)"/>
+            </linearGradient>
+          </defs>
+          <path d="M18 8 L24 16 H20 V24 H16 V16 H12 Z" fill="white"/>
+          <rect x="10" y="26" width="16" height="2" rx="1" fill="white"/>
+        </svg>
+      </div>
+      <div class="dl-header-text">
+        <div class="dl-plan-name" id="dlPlanName">Подключение</div>
+        <div class="dl-app-label">Happ — VPN клиент</div>
+      </div>
+    </div>
+
+    <!-- Subtitle -->
+    <p class="dl-sub">Скачайте приложение Happ для вашей платформы и введите ключ подписки</p>
+
+    <!-- Platform cards -->
+    <div class="dl-platforms">
+
+      <!-- Android APK прямой -->
+      <a href="https://happ.su/download/android" target="_blank" rel="noopener"
+         class="dl-card dl-card--android" onclick="trackDl('apk')">
+        <div class="dl-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20
+                     C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M17.82 15.64a2.18
+                     2.18 0 0 1 2.18 2.18C20 19.01 19.01 20 17.82 20c-1.19 0-2.18-.99-2.18
+                     -2.18a2.18 2.18 0 0 1 2.18-2.18M17.82 10.5c.28 0 .5.22.5.5v3.64h-1V11h
+                     -1v-.5c0-.28.22-.5.5-.5h1M6.18 10.5h1c.28 0 .5.22.5.5v.5H6.68v3.14h-1
+                     V11c0-.28.22-.5.5-.5M8.09 2L9.5 4.5H7L5.47 2.76a.42.42 0 0 1 .6-.58L7.13
+                     3.3 8.09 2m7.82 0l.96 1.3 1.06-1.12a.42.42 0 0 1 .6.58L17 4.5h-2.5L16
+                     2h-.09M12 2a8 8 0 0 1 8 8H4a8 8 0 0 1 8-8z"/>
+          </svg>
+        </div>
+        <div class="dl-card-info">
+          <div class="dl-card-title">Android APK</div>
+          <div class="dl-card-sub">Прямая загрузка · happ.su</div>
+        </div>
+        <div class="dl-card-arrow">↓</div>
+      </a>
+
+      <!-- Google Play -->
+      <a href="https://play.google.com/store/apps/details?id=su.happ.android" target="_blank" rel="noopener"
+         class="dl-card dl-card--gplay" onclick="trackDl('gplay')">
+        <div class="dl-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <path d="M3 20.5v-17c0-.83 1-.83 1.5-.5l15 8.5-15 8.5c-.5.33-1.5.33-1.5-.5z"
+                  fill="#34A853"/>
+            <path d="M3 3.5L13.5 12 3 20.5V3.5z" fill="#4285F4"/>
+            <path d="M3 3.5l10.5 8.5L18 7.8 5.5 1z" fill="#EA4335"/>
+            <path d="M3 20.5l10.5-8.5L18 16.2 5.5 23z" fill="#FBBC05"/>
+          </svg>
+        </div>
+        <div class="dl-card-info">
+          <div class="dl-card-title">Google Play</div>
+          <div class="dl-card-sub">Android · Автообновление</div>
+        </div>
+        <div class="dl-card-arrow">→</div>
+      </a>
+
+      <!-- Windows -->
+      <a href="https://happ.su/download/windows" target="_blank" rel="noopener"
+         class="dl-card dl-card--win" onclick="trackDl('windows')">
+        <div class="dl-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451
+                     L0 20.699M10.949 12.6H24V24l-13.051-1.949" fill="#00ADEF"/>
+          </svg>
+        </div>
+        <div class="dl-card-info">
+          <div class="dl-card-title">Windows</div>
+          <div class="dl-card-sub">Win 10 / 11 · x64 · .exe</div>
+        </div>
+        <div class="dl-card-arrow">↓</div>
+      </a>
+
+      <!-- iOS App Store -->
+      <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank" rel="noopener"
+         class="dl-card dl-card--ios" onclick="trackDl('ios')">
+        <div class="dl-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29
+                     -.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94
+                     12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87
+                     .78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15
+                     3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5
+                     c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83
+                     1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+        </div>
+        <div class="dl-card-info">
+          <div class="dl-card-title">iOS / iPadOS</div>
+          <div class="dl-card-sub">App Store · iPhone &amp; iPad</div>
+        </div>
+        <div class="dl-card-arrow">→</div>
+      </a>
+
+    </div>
+
+    <!-- Key block -->
+    <div class="dl-key-block">
+      <div class="dl-key-label">
+        <span>🔑</span>
+        <span>Ваш ключ подписки</span>
+        <span class="dl-key-tip">Вставьте в приложение Happ</span>
+      </div>
+      <div class="dl-key-row">
+        <code class="dl-key-value" id="dlKeyValue">vless://войдите-чтобы-получить-ключ</code>
+        <button class="dl-copy-btn" id="dlCopyBtn" onclick="copyKey()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          <span id="dlCopyTxt">Скопировать</span>
+        </button>
+      </div>
+      <div class="dl-key-hint">
+        После оплаты ключ появится автоматически. Пока доступен демо-ключ.
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="dl-steps">
+      <div class="dl-step"><span class="dl-step-n">1</span><span>Скачайте и установите Happ</span></div>
+      <div class="dl-step"><span class="dl-step-n">2</span><span>Нажмите «+» → «Добавить конфигурацию»</span></div>
+      <div class="dl-step"><span class="dl-step-n">3</span><span>Вставьте ваш ключ и подключитесь</span></div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* ── Download Modal ──────────────────────────────────── */
+.dl-modal{max-width:480px;padding:2rem}
+
+.dl-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.dl-app-icon{
+  width:54px;height:54px;border-radius:16px;flex-shrink:0;
+  box-shadow:0 6px 24px color-mix(in srgb,var(--primary) 35%,transparent);
+}
+.dl-plan-name{font-family:'Unbounded',sans-serif;font-weight:800;font-size:1.1rem}
+.dl-app-label{color:var(--muted);font-size:.78rem;margin-top:.15rem}
+
+.dl-sub{color:var(--muted);font-size:.82rem;line-height:1.65;margin-bottom:1.5rem}
+
+/* Platform cards */
+.dl-platforms{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
+.dl-card{
+  display:flex;align-items:center;gap:.9rem;
+  padding:.9rem 1rem;border-radius:14px;text-decoration:none;
+  background:var(--s2);border:1px solid var(--border);
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.dl-card::before{
+  content:'';position:absolute;inset:0;opacity:0;
+  transition:opacity .25s;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--primary) 6%,transparent),transparent);
+}
+.dl-card:hover{transform:translateX(4px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.dl-card:hover::before{opacity:1}
+.dl-card--android:hover{border-color:rgba(61,220,132,.4)}
+.dl-card--gplay:hover  {border-color:rgba(66,133,244,.4)}
+.dl-card--win:hover    {border-color:rgba(0,173,239,.4)}
+.dl-card--ios:hover    {border-color:rgba(255,255,255,.2)}
+.dl-card-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.dl-card-info{flex:1}
+.dl-card-title{font-weight:700;font-size:.9rem;color:var(--text)}
+.dl-card-sub{color:var(--muted);font-size:.75rem;margin-top:.1rem}
+.dl-card-arrow{
+  color:var(--muted);font-size:1.1rem;font-weight:700;
+  transition:transform .2s,color .2s;
+}
+.dl-card:hover .dl-card-arrow{transform:translateX(3px);color:var(--primary)}
+
+/* Key block */
+.dl-key-block{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:14px;padding:1rem;margin-bottom:1.25rem;
+}
+.dl-key-label{
+  display:flex;align-items:center;gap:.5rem;
+  font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:.6rem;
+  flex-wrap:wrap;
+}
+.dl-key-tip{
+  margin-left:auto;color:var(--muted);font-weight:400;font-size:.72rem;
+}
+.dl-key-row{display:flex;align-items:center;gap:.5rem}
+.dl-key-value{
+  flex:1;font-size:.7rem;color:var(--accent);
+  background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);
+  border-radius:8px;padding:.45rem .65rem;font-family:monospace;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dl-copy-btn{
+  display:flex;align-items:center;gap:.35rem;
+  padding:.45rem .8rem;border-radius:8px;border:none;cursor:pointer;
+  background:color-mix(in srgb,var(--primary) 15%,transparent);
+  color:var(--primary);font-size:.75rem;font-weight:600;
+  transition:all .2s;white-space:nowrap;font-family:inherit;
+  flex-shrink:0;
+}
+.dl-copy-btn:hover{background:var(--primary);color:#fff}
+.dl-copy-btn.copied{background:rgba(46,213,115,.2);color:#2ED573}
+.dl-key-hint{color:var(--muted);font-size:.72rem;margin-top:.6rem;line-height:1.5}
+
+/* Steps */
+.dl-steps{display:flex;flex-direction:column;gap:.5rem}
+.dl-step{
+  display:flex;align-items:center;gap:.7rem;
+  font-size:.8rem;color:var(--muted);
+}
+.dl-step-n{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;font-size:.7rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+</style>

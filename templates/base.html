@@ -20,7 +20,6 @@
   --border: rgba(255,255,255,0.07);
   --text:   #F0F2FF;
   --muted:  #8B90A0;
-  --r:      16px;
   --glow:   0 0 60px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -30,12 +29,11 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
 
-/* ──── PRELOADER ──────────────────────────────────────── */
+/* ──── PRELOADER ────────────────────────────────────────── */
 #preloader{
-  position:fixed;inset:0;z-index:9999;
-  background:var(--bg);
+  position:fixed;inset:0;z-index:9999;background:var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity .5s ease, visibility .5s ease;
+  transition:opacity .5s ease,visibility .5s ease;
 }
 #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .pre-logo{
@@ -50,37 +48,25 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   display:flex;align-items:center;justify-content:center;font-size:1.4rem;
   box-shadow:0 0 30px color-mix(in srgb,var(--primary) 50%,transparent);
 }
-.pre-bar{
-  width:200px;height:3px;background:var(--s2);border-radius:10px;overflow:hidden;
-}
-.pre-fill{
-  height:100%;width:0;border-radius:10px;
-  background:linear-gradient(90deg,var(--primary),var(--accent));
-  animation:preLoad 1.4s cubic-bezier(.4,0,.2,1) forwards;
-}
+.pre-bar{width:200px;height:3px;background:var(--s2);border-radius:10px;overflow:hidden;}
+.pre-fill{height:100%;width:0;border-radius:10px;background:linear-gradient(90deg,var(--primary),var(--accent));animation:preLoad 1.4s cubic-bezier(.4,0,.2,1) forwards;}
 @keyframes preLoad{0%{width:0}60%{width:80%}100%{width:100%}}
-.pre-dots{
-  display:flex;gap:.5rem;margin-top:1.5rem;
-}
-.pre-dots span{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--primary);opacity:.3;
-  animation:dotBlink 1.2s ease-in-out infinite;
-}
+.pre-dots{display:flex;gap:.5rem;margin-top:1.5rem;}
+.pre-dots span{width:7px;height:7px;border-radius:50%;background:var(--primary);opacity:.3;animation:dotBlink 1.2s ease-in-out infinite;}
 .pre-dots span:nth-child(2){animation-delay:.2s}
 .pre-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dotBlink{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 
-/* ──── NAV ────────────────────────────────────────────── */
+/* ──── NAV ──────────────────────────────────────────────── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:500;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 5%;height:68px;
   background:rgba(10,11,15,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
-  transition:background .3s, box-shadow .3s;
+  transition:background .3s,box-shadow .3s;
 }
-nav.scrolled{background:rgba(10,11,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
+nav.scrolled{background:rgba(10,11,15,.95);box-shadow:0 4px 30px rgba(0,0,0,.5)}
 .nav-logo{
   display:flex;align-items:center;gap:.6rem;
   font-family:'Unbounded',sans-serif;font-weight:800;font-size:1rem;
@@ -94,17 +80,10 @@ nav.scrolled{background:rgba(10,11,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
   box-shadow:0 0 15px color-mix(in srgb,var(--primary) 40%,transparent);
   transition:transform .3s;
 }
-.nav-logo:hover .nav-icon{transform:rotate(-10deg) scale(1.08)}
+.nav-logo:hover .nav-icon{transform:rotate(-10deg) scale(1.1)}
 .nav-links{display:flex;align-items:center;gap:2rem}
-.nav-links a{
-  color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;
-  position:relative;transition:color .2s;
-}
-.nav-links a::after{
-  content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;
-  background:var(--primary);transform:scaleX(0);transform-origin:left;
-  transition:transform .3s;
-}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;position:relative;transition:color .2s}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;background:var(--primary);transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .nav-links a:hover{color:var(--text)}
 .nav-links a:hover::after{transform:scaleX(1)}
 .nav-right{display:flex;align-items:center;gap:.75rem}
@@ -115,12 +94,6 @@ nav.scrolled{background:rgba(10,11,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
   text-decoration:none;cursor:pointer;border:none;font-family:inherit;
   transition:all .22s;position:relative;overflow:hidden;
 }
-.btn::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0));
-  opacity:0;transition:opacity .2s;
-}
-.btn:hover::after{opacity:1}
 .btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px color-mix(in srgb,var(--primary) 40%,transparent)}
 .btn-primary:active{transform:translateY(0)}
@@ -128,47 +101,32 @@ nav.scrolled{background:rgba(10,11,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
 .btn-ghost:hover{border-color:var(--primary);color:var(--primary);background:color-mix(in srgb,var(--primary) 6%,transparent)}
 .btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}
 .btn-outline:hover{background:var(--primary);color:#fff;transform:translateY(-2px)}
-
-/* Loading spinner on buttons */
 .btn.loading{pointer-events:none;opacity:.7}
 .btn.loading .btn-text{opacity:0}
-.btn.loading::before{
-  content:'';position:absolute;width:16px;height:16px;border-radius:50%;
-  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
-  animation:spin .7s linear infinite;
-}
+.btn.loading::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .user-pill{
   display:flex;align-items:center;gap:.6rem;
   padding:.35rem .9rem .35rem .35rem;
   background:var(--s1);border:1px solid var(--border);border-radius:100px;
-  transition:border-color .2s;
+  transition:border-color .2s;cursor:default;
 }
 .user-pill:hover{border-color:var(--primary)}
 .u-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0}
-.u-avatar-ph{
-  width:28px;height:28px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;
-}
+.u-avatar-ph{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
 .u-name{font-size:.82rem;font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* ──── MODAL ──────────────────────────────────────────── */
+/* ──── OVERLAY / MODAL BASE ─────────────────────────────── */
 .overlay{
   display:none;position:fixed;inset:0;z-index:800;
-  background:rgba(0,0,0,0);backdrop-filter:blur(0px);
+  background:rgba(0,0,0,.65);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   align-items:center;justify-content:center;
-  transition:background .3s, backdrop-filter .3s;
 }
-.overlay.open{
-  display:flex;
-  background:rgba(0,0,0,.65);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
+.overlay.open{display:flex}
 .modal{
   background:var(--s1);border:1px solid var(--border);border-radius:24px;
-  padding:2.5rem;width:min(440px,92vw);position:relative;
+  padding:2.5rem;width:min(460px,94vw);position:relative;
   animation:mIn .35s cubic-bezier(.34,1.4,.64,1);
 }
 @keyframes mIn{from{opacity:0;transform:scale(.88) translateY(16px)}to{opacity:1;transform:none}}
@@ -184,42 +142,85 @@ nav.scrolled{background:rgba(10,11,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
   width:60px;height:60px;border-radius:18px;
   background:linear-gradient(135deg,var(--primary),var(--accent));
   display:flex;align-items:center;justify-content:center;font-size:1.8rem;
-  margin:0 auto 1.5rem;
+  margin:0 auto 1.4rem;
   box-shadow:0 10px 40px color-mix(in srgb,var(--primary) 35%,transparent);
   animation:iconFloat 3s ease-in-out infinite;
 }
 @keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.modal-title{font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:.5rem}
-.modal-sub{color:var(--muted);font-size:.875rem;text-align:center;line-height:1.6;margin-bottom:2rem}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:.4rem}
+.modal-sub{color:var(--muted);font-size:.85rem;text-align:center;line-height:1.6;margin-bottom:1.75rem}
 
-/* Telegram widget wrapper */
-.tg-widget-wrap{
-  display:flex;flex-direction:column;align-items:center;gap:1rem;
-}
-.tg-btn-real{
-  /* wrapper for real Telegram widget */
-  display:flex;justify-content:center;
-}
-/* Demo button (shown when no bot configured) */
+/* ──── LOGIN MODAL ──────────────────────────────────────── */
+.tg-widget-wrap{display:flex;flex-direction:column;align-items:center;gap:1rem}
 .tg-demo-btn{
   width:100%;display:flex;align-items:center;justify-content:center;gap:.75rem;
   padding:1rem 1.5rem;border-radius:14px;
   background:linear-gradient(135deg,#2AABEE,#229ED9);
   color:#fff;font-weight:700;font-size:.95rem;border:none;cursor:pointer;
-  transition:all .22s;box-shadow:0 4px 20px rgba(42,171,238,.3);
-  font-family:inherit;
+  transition:all .22s;box-shadow:0 4px 20px rgba(42,171,238,.3);font-family:inherit;
 }
 .tg-demo-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(42,171,238,.45)}
-.tg-demo-btn:active{transform:translateY(0)}
 .tg-demo-btn svg{width:22px;height:22px;flex-shrink:0}
 .demo-badge{
-  display:inline-flex;align-items:center;gap:.4rem;
-  padding:.3rem .8rem;border-radius:100px;
+  display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:100px;
   background:rgba(255,165,0,.1);border:1px solid rgba(255,165,0,.3);
   color:#FFA500;font-size:.72rem;font-weight:600;
 }
 
-/* ──── TOAST ──────────────────────────────────────────── */
+/* ──── DOWNLOAD MODAL ───────────────────────────────────── */
+#dlModal .modal{width:min(540px,96vw);padding:2rem}
+.dl-plan-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.35rem 1rem;border-radius:100px;margin-bottom:1.5rem;
+  background:color-mix(in srgb,var(--primary) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--primary) 30%,transparent);
+  color:var(--primary);font-size:.78rem;font-weight:700;
+}
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.5rem}
+@media(max-width:420px){.dl-grid{grid-template-columns:1fr}}
+.dl-card{
+  display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  padding:1.4rem 1rem;border-radius:18px;
+  background:var(--s2);border:1px solid var(--border);
+  text-decoration:none;color:var(--text);
+  transition:all .25s;position:relative;overflow:hidden;cursor:pointer;
+}
+.dl-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 8%,transparent),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.dl-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--primary) 45%,transparent);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.dl-card:hover::before{opacity:1}
+.dl-card.featured{border-color:var(--primary);background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 10%,var(--s2)),var(--s2))}
+.dl-icon-wrap{
+  width:52px;height:52px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  transition:transform .3s;
+}
+.dl-card:hover .dl-icon-wrap{transform:scale(1.12)}
+.dl-platform{font-family:'Unbounded',sans-serif;font-size:.78rem;font-weight:700;text-align:center}
+.dl-desc{color:var(--muted);font-size:.72rem;text-align:center;line-height:1.4}
+.dl-badge{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.2rem .65rem;border-radius:100px;font-size:.65rem;font-weight:700;
+  background:color-mix(in srgb,var(--accent) 15%,transparent);
+  color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);
+}
+.dl-divider{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;
+  color:var(--muted);font-size:.75rem;
+}
+.dl-divider::before,.dl-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.dl-note{
+  padding:.9rem 1rem;border-radius:12px;
+  background:color-mix(in srgb,var(--primary) 6%,transparent);
+  border:1px solid color-mix(in srgb,var(--primary) 18%,transparent);
+  color:var(--muted);font-size:.75rem;line-height:1.65;text-align:center;
+}
+.dl-note strong{color:var(--text)}
+
+/* ──── TOAST ────────────────────────────────────────────── */
 #toast-wrap{position:fixed;top:80px;right:1.5rem;z-index:2000;display:flex;flex-direction:column;gap:.6rem}
 .toast{
   display:flex;align-items:center;gap:.75rem;
@@ -230,13 +231,13 @@ nav.scrolled{background:rgba(10,11,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
   box-shadow:0 8px 30px rgba(0,0,0,.4);
 }
 .toast.success{border-color:rgba(46,213,115,.4);background:color-mix(in srgb,#2ED573 8%,var(--s2))}
-.toast.error  {border-color:rgba(255,71,87,.4); background:color-mix(in srgb,#FF4757 8%,var(--s2))}
-.toast.info   {border-color:color-mix(in srgb,var(--primary) 40%,transparent);background:color-mix(in srgb,var(--primary) 8%,var(--s2))}
+.toast.error{border-color:rgba(255,71,87,.4);background:color-mix(in srgb,#FF4757 8%,var(--s2))}
+.toast.info{border-color:color-mix(in srgb,var(--primary) 40%,transparent);background:color-mix(in srgb,var(--primary) 8%,var(--s2))}
 @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
 .toast.out{animation:toastOut .3s ease forwards}
 @keyframes toastOut{to{opacity:0;transform:translateX(40px)}}
 
-/* ──── FOOTER ─────────────────────────────────────────── */
+/* ──── FOOTER ───────────────────────────────────────────── */
 footer{
   border-top:1px solid var(--border);padding:3rem 5%;margin-top:6rem;
   display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:center;
@@ -247,142 +248,148 @@ footer{
 .footer-links a:hover{color:var(--primary)}
 .footer-copy{color:var(--muted);font-size:.8rem}
 
-/* ──── HAMBURGER ──────────────────────────────────────── */
 .hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:1.4rem;padding:.3rem}
 @media(max-width:768px){
-  .nav-links{
-    display:none;flex-direction:column;
-    position:absolute;top:68px;left:0;right:0;
-    background:rgba(10,11,15,.97);border-bottom:1px solid var(--border);
-    padding:1.25rem 5%;gap:1rem;
-    animation:navDown .2s ease;
-  }
+  .nav-links{display:none;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:rgba(10,11,15,.97);border-bottom:1px solid var(--border);padding:1.25rem 5%;gap:1rem;animation:navDown .2s ease}
   @keyframes navDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
   .nav-links.open{display:flex}
   .hamburger{display:block}
 }
 
-/* ──── REVEAL ANIMATIONS ──────────────────────────────── */
+/* ──── REVEAL ANIMATIONS ────────────────────────────────── */
 [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
 [data-reveal].revealed{opacity:1;transform:none}
-[data-reveal="left"]{transform:translateX(-28px)}
-[data-reveal="left"].revealed{transform:none}
-[data-reveal="right"]{transform:translateX(28px)}
-[data-reveal="right"].revealed{transform:none}
-[data-reveal="scale"]{transform:scale(.93)}
-[data-reveal="scale"].revealed{transform:none}
-
-/* stagger children */
-[data-stagger] > *{opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease}
-[data-stagger].revealed > *{opacity:1;transform:none}
-{% for i in range(12) %}
-[data-stagger].revealed > *:nth-child({{ i+1 }}){transition-delay:{{ i*0.08 }}s}
+[data-reveal="left"]{transform:translateX(-28px)}[data-reveal="left"].revealed{transform:none}
+[data-reveal="right"]{transform:translateX(28px)}[data-reveal="right"].revealed{transform:none}
+[data-reveal="scale"]{transform:scale(.93)}[data-reveal="scale"].revealed{transform:none}
+[data-stagger]>*{opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease}
+[data-stagger].revealed>*{opacity:1;transform:none}
+{% for i in range(12) %}[data-stagger].revealed>*:nth-child({{ i+1 }}){transition-delay:{{ i*0.08 }}s}
 {% endfor %}
 </style>
-
 {% block extra_head %}{% endblock %}
 </head>
 <body>
 
-<!-- ══ PRELOADER ═══════════════════════════════════════ -->
+<!-- ══ PRELOADER ═══════════════════════════════════════════ -->
 <div id="preloader">
-  <div class="pre-logo">
-    <div class="pre-icon">🛡️</div>
-    {{ settings.site_name }}
-  </div>
+  <div class="pre-logo"><div class="pre-icon">🛡️</div>{{ settings.site_name }}</div>
   <div class="pre-bar"><div class="pre-fill"></div></div>
-  <div class="pre-dots">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="pre-dots"><span></span><span></span><span></span></div>
 </div>
 
-<!-- ══ TOAST CONTAINER ════════════════════════════════ -->
 <div id="toast-wrap"></div>
+{% with messages = get_flashed_messages() %}{% if messages %}<script>window.__serverFlash={{ messages|tojson }};</script>{% endif %}{% endwith %}
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-  <script>
-    window.__serverFlash = {{ messages | tojson }};
-  </script>
-{% endif %}
-{% endwith %}
-
-<!-- ══ NAV ════════════════════════════════════════════ -->
+<!-- ══ NAV ═════════════════════════════════════════════════ -->
 <nav id="navbar">
   <a href="/" class="nav-logo">
-    <div class="nav-icon">🛡️</div>
-    {{ settings.site_name }}
+    <div class="nav-icon">🛡️</div>{{ settings.site_name }}
   </a>
-
   <div class="nav-links" id="navLinks">
     <a href="/">Главная</a>
     <a href="/pricing">Тарифы</a>
     <a href="/#features">Возможности</a>
   </div>
-
   <div class="nav-right">
     {% if user %}
       <div class="user-pill">
-        {% if user.photo_url %}
-          <img src="{{ user.photo_url }}" class="u-avatar" alt=""/>
-        {% else %}
-          <div class="u-avatar-ph">{{ (user.first_name or 'U')[0].upper() }}</div>
-        {% endif %}
+        {% if user.photo_url %}<img src="{{ user.photo_url }}" class="u-avatar" alt=""/>
+        {% else %}<div class="u-avatar-ph">{{ (user.first_name or 'U')[0].upper() }}</div>{% endif %}
         <span class="u-name">{{ user.first_name or user.username or 'Пользователь' }}</span>
       </div>
       <a href="/logout" class="btn btn-ghost" style="padding:.5rem 1rem">Выйти</a>
     {% else %}
-      <button class="btn btn-primary" onclick="openLoginModal()">
-        <span class="btn-text">🔐 Войти</span>
-      </button>
+      <button class="btn btn-primary" onclick="openLoginModal()"><span class="btn-text">🔐 Войти</span></button>
     {% endif %}
-    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
   </div>
 </nav>
 
-<!-- ══ LOGIN MODAL ════════════════════════════════════ -->
+<!-- ══ LOGIN MODAL ══════════════════════════════════════════ -->
 <div class="overlay" id="loginModal">
-  <div class="modal" role="dialog" aria-modal="true">
-    <button class="modal-close" onclick="closeLoginModal()" aria-label="Закрыть">✕</button>
-
+  <div class="modal" role="dialog">
+    <button class="modal-close" onclick="closeLoginModal()">✕</button>
     <div class="modal-icon">🔐</div>
     <div class="modal-title">Войти в аккаунт</div>
-    <div class="modal-sub">
-      Быстрая авторизация через Telegram — без паролей и почты
-    </div>
-
+    <div class="modal-sub">Быстрая авторизация через Telegram — без паролей и почты</div>
     <div class="tg-widget-wrap">
       {% if has_bot %}
-        <!-- ✅ РЕАЛЬНЫЙ Telegram Login Widget -->
-        <div class="tg-btn-real" id="tg-widget-container">
-          <script
-            async
-            src="https://telegram.org/js/telegram-widget.js?22"
+        <div id="tg-widget-container">
+          <script async src="https://telegram.org/js/telegram-widget.js?22"
             data-telegram-login="{{ bot_username }}"
-            data-size="large"
-            data-radius="12"
+            data-size="large" data-radius="12"
             data-onauth="onTelegramAuth(user)"
-            data-request-access="write">
-          </script>
+            data-request-access="write"></script>
         </div>
       {% else %}
-        <!-- ⚠️ Demo-режим: бот не настроен -->
         <button class="tg-demo-btn" onclick="onTelegramAuthDemo()">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
           Войти через Telegram (demo)
         </button>
-        <div class="demo-badge">
-          ⚠️ Demo-режим — настройте бота в /admin → Настройки
-        </div>
+        <div class="demo-badge">⚠️ Demo-режим — настройте бота в /admin → Настройки</div>
       {% endif %}
     </div>
-
     <p style="text-align:center;color:var(--muted);font-size:.75rem;margin-top:1.5rem;line-height:1.6">
-      Нажимая кнопку, вы соглашаетесь с
-      <a href="#" style="color:var(--primary)">условиями использования</a>
+      Нажимая кнопку, вы соглашаетесь с <a href="#" style="color:var(--primary)">условиями использования</a>
     </p>
+  </div>
+</div>
+
+<!-- ══ DOWNLOAD MODAL ══════════════════════════════════════ -->
+<div class="overlay" id="dlModal">
+  <div class="modal" role="dialog" style="width:min(560px,96vw)">
+    <button class="modal-close" onclick="closeDlModal()">✕</button>
+
+    <div class="modal-icon">📲</div>
+    <div class="modal-title">Скачать приложение</div>
+    <div class="modal-sub">
+      Выберите платформу. Используйте приложение <strong style="color:var(--text)">Happ</strong> и введите ваш ключ подключения.
+    </div>
+
+    <div id="dlPlanBadge" style="text-align:center;margin-bottom:1.25rem"></div>
+
+    <!-- Platform cards -->
+    <div class="dl-grid">
+      <!-- Android APK -->
+      <a href="https://happ.su/dl/android" target="_blank" rel="noopener" class="dl-card featured">
+        <div class="dl-icon-wrap" style="background:linear-gradient(135deg,#3DDC84,#00A86B)">🤖</div>
+        <div class="dl-platform">Android APK</div>
+        <div class="dl-desc">Прямая установка файла без магазина</div>
+        <div class="dl-badge">⬇ Скачать APK</div>
+      </a>
+
+      <!-- Google Play -->
+      <a href="https://play.google.com/store/apps/details?id=su.happ.android" target="_blank" rel="noopener" class="dl-card">
+        <div class="dl-icon-wrap" style="background:linear-gradient(135deg,#4285F4,#34A853)">▶</div>
+        <div class="dl-platform">Google Play</div>
+        <div class="dl-desc">Установка через официальный магазин Android</div>
+        <div class="dl-badge">🏪 Google Play</div>
+      </a>
+
+      <!-- Windows -->
+      <a href="https://happ.su/dl/windows" target="_blank" rel="noopener" class="dl-card">
+        <div class="dl-icon-wrap" style="background:linear-gradient(135deg,#0078D4,#50E6FF)">🪟</div>
+        <div class="dl-platform">Windows</div>
+        <div class="dl-desc">Версия для Windows 10 / 11 (64-bit)</div>
+        <div class="dl-badge">⬇ Скачать .exe</div>
+      </a>
+
+      <!-- iOS App Store -->
+      <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank" rel="noopener" class="dl-card">
+        <div class="dl-icon-wrap" style="background:linear-gradient(135deg,#555,#1C1C1E)">🍎</div>
+        <div class="dl-platform">iOS / iPadOS</div>
+        <div class="dl-desc">iPhone и iPad, iOS 15+</div>
+        <div class="dl-badge">🏪 App Store</div>
+      </a>
+    </div>
+
+    <div class="dl-divider">Как подключиться</div>
+
+    <div class="dl-note">
+      После установки откройте Happ → нажмите <strong>«+»</strong> → вставьте ключ подключения<br>
+      из вашего личного кабинета. Нажмите <strong>«Подключить»</strong> — готово! 🚀
+    </div>
   </div>
 </div>
 
@@ -394,138 +401,162 @@ footer{
     <div style="color:var(--muted);font-size:.78rem;margin-top:.3rem">Быстрый и надёжный VPN</div>
   </div>
   <div class="footer-links">
-    <a href="#">Оферта</a>
-    <a href="#">Конфиденциальность</a>
-    <a href="#">Поддержка</a>
+    <a href="#">Оферта</a><a href="#">Конфиденциальность</a><a href="#">Поддержка</a>
   </div>
   <div class="footer-copy">© 2025 {{ settings.site_name }}</div>
 </footer>
 
 <script>
-/* ── Toast ─────────────────────────────────────────── */
-function showToast(msg, type='info', ms=3500){
-  const icons = {success:'✅',error:'❌',info:'ℹ️'};
-  const wrap = document.getElementById('toast-wrap');
-  const t    = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
-  wrap.appendChild(t);
-  setTimeout(()=>{
-    t.classList.add('out');
-    setTimeout(()=>t.remove(), 350);
-  }, ms);
+/* ── Toast ──────────────────────────────────────────────── */
+function showToast(msg,type='info',ms=3500){
+  const icons={success:'✅',error:'❌',info:'ℹ️'};
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=`<span>${icons[type]}</span><span>${msg}</span>`;
+  document.getElementById('toast-wrap').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),350);},ms);
 }
-if(window.__serverFlash){
-  window.__serverFlash.forEach(m => showToast(m,'success'));
-}
+if(window.__serverFlash) window.__serverFlash.forEach(m=>showToast(m,'success'));
 
-/* ── Preloader ─────────────────────────────────────── */
-window.addEventListener('load', ()=>{
+/* ── Preloader ──────────────────────────────────────────── */
+window.addEventListener('load',()=>{
   setTimeout(()=>{
     document.getElementById('preloader').classList.add('hidden');
-    // trigger reveals after preloader gone
     initReveal();
-  }, 600);
+  },600);
 });
 
-/* ── Scroll reveal ─────────────────────────────────── */
+/* ── Scroll reveal ──────────────────────────────────────── */
 function initReveal(){
-  const els  = document.querySelectorAll('[data-reveal], [data-stagger]');
-  const obs  = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add('revealed');
-        obs.unobserve(e.target);
-      }
-    });
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');obs.unobserve(e.target);}});
   },{threshold:.12});
-  els.forEach(el=>obs.observe(el));
+  document.querySelectorAll('[data-reveal],[data-stagger]').forEach(el=>obs.observe(el));
 }
 
-/* ── Navbar ────────────────────────────────────────── */
+/* ── Navbar ─────────────────────────────────────────────── */
 window.addEventListener('scroll',()=>{
-  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
+  document.getElementById('navbar').classList.toggle('scrolled',scrollY>40);
 });
-function toggleMenu(){
-  document.getElementById('navLinks').classList.toggle('open');
-}
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
 
-/* ── Modal ─────────────────────────────────────────── */
+/* ── Login modal ────────────────────────────────────────── */
 function openLoginModal(){
   document.getElementById('loginModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow='hidden';
 }
 function closeLoginModal(){
   document.getElementById('loginModal').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.overflow='';
 }
-document.getElementById('loginModal').addEventListener('click', e=>{
-  if(e.target === e.currentTarget) closeLoginModal();
+document.getElementById('loginModal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget) closeLoginModal();
 });
-{% if request.args.get('login') %}
-window.addEventListener('DOMContentLoaded', openLoginModal);
-{% endif %}
+{% if request.args.get('login') %}window.addEventListener('DOMContentLoaded',openLoginModal);{% endif %}
 
-/* ── Telegram auth callback ────────────────────────── */
-function onTelegramAuth(user){
-  const btn = document.querySelector('.tg-btn-real');
-  if(btn) btn.style.opacity = '.5';
-  sendTgAuth(user);
+/* ── Download modal ─────────────────────────────────────── */
+function openDlModal(planName){
+  const badge=document.getElementById('dlPlanBadge');
+  if(planName){
+    badge.innerHTML=`<span class="dl-plan-badge">📦 Тариф: ${planName}</span>`;
+  } else {
+    badge.innerHTML='';
+  }
+  document.getElementById('dlModal').classList.add('open');
+  document.body.style.overflow='hidden';
 }
+function closeDlModal(){
+  document.getElementById('dlModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('dlModal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget) closeDlModal();
+});
 
+/* ── Telegram auth ──────────────────────────────────────── */
+function onTelegramAuth(user){sendTgAuth(user)}
 function onTelegramAuthDemo(){
-  const btn = document.querySelector('.tg-demo-btn');
-  if(btn){ btn.classList.add('loading'); btn.disabled = true; }
-  const demo = {
-    id: Math.floor(Math.random()*900000)+100000,
-    first_name: 'Пользователь',
-    username:   'demo_user_' + Math.floor(Math.random()*9999),
-    auth_date:  Math.floor(Date.now()/1000),
-    hash: 'demo'
-  };
-  sendTgAuth(demo);
+  const btn=document.querySelector('.tg-demo-btn');
+  if(btn){btn.classList.add('loading');btn.disabled=true;}
+  sendTgAuth({
+    id:Math.floor(Math.random()*900000)+100000,
+    first_name:'Пользователь',username:'demo_user_'+Math.floor(Math.random()*9999),
+    auth_date:Math.floor(Date.now()/1000),hash:'demo'
+  });
 }
-
 function sendTgAuth(data){
-  fetch('/telegram-login',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(data)
-  })
-  .then(r=>r.json())
-  .then(d=>{
-    if(d.ok){
-      showToast(`Добро пожаловать, ${d.name}! 🎉`,'success',2500);
-      setTimeout(()=>location.reload(), 900);
-    } else {
-      showToast('Ошибка авторизации: ' + (d.error||'?'),'error');
-    }
-  })
-  .catch(()=> showToast('Ошибка сети','error'));
+  fetch('/telegram-login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+  .then(r=>r.json()).then(d=>{
+    if(d.ok){showToast(`Добро пожаловать, ${d.name}! 🎉`,'success',2500);setTimeout(()=>location.reload(),900);}
+    else showToast('Ошибка авторизации: '+(d.error||'?'),'error');
+  }).catch(()=>showToast('Ошибка сети','error'));
 }
 
-/* ── Button ripple ─────────────────────────────────── */
-document.addEventListener('click', e=>{
-  const btn = e.target.closest('.btn');
-  if(!btn) return;
-  const r   = document.createElement('span');
-  const rc  = btn.getBoundingClientRect();
-  const size= Math.max(rc.width, rc.height);
-  r.style.cssText=`position:absolute;width:${size}px;height:${size}px;
-    border-radius:50%;background:rgba(255,255,255,.15);
-    left:${e.clientX-rc.left-size/2}px;top:${e.clientY-rc.top-size/2}px;
-    transform:scale(0);animation:ripple .5s linear;pointer-events:none`;
-  if(!document.getElementById('ripple-style')){
-    const s = document.createElement('style');
-    s.id='ripple-style';
+/* ── Ripple ─────────────────────────────────────────────── */
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.btn');if(!btn||btn.classList.contains('loading'))return;
+  const r=document.createElement('span');
+  const rc=btn.getBoundingClientRect();
+  const sz=Math.max(rc.width,rc.height);
+  r.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;border-radius:50%;
+    background:rgba(255,255,255,.15);left:${e.clientX-rc.left-sz/2}px;
+    top:${e.clientY-rc.top-sz/2}px;transform:scale(0);
+    animation:ripple .5s linear;pointer-events:none`;
+  if(!document.getElementById('ripple-s')){
+    const s=document.createElement('style');s.id='ripple-s';
     s.textContent='@keyframes ripple{to{transform:scale(2.5);opacity:0}}';
     document.head.appendChild(s);
   }
-  btn.appendChild(r);
-  setTimeout(()=>r.remove(), 500);
+  btn.appendChild(r);setTimeout(()=>r.remove(),500);
 });
 </script>
+{% include 'download_modal.html' %}
 
 {% block extra_js %}{% endblock %}
+
+<script>
+/* ── Download Modal ─────────────────────────────────── */
+const DEMO_KEY = 'vless://demo-key@your-server.com:443?security=tls&type=ws&path=%2Fvless#NordShield-Demo';
+
+function openDlModal(planName){
+  const modal = document.getElementById('dlModal');
+  if(planName) document.getElementById('dlPlanName').textContent = planName;
+  // Show real key if user logged in (extend later with API call)
+  document.getElementById('dlKeyValue').textContent = DEMO_KEY;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDlModal(){
+  document.getElementById('dlModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('dlModal').addEventListener('click', e=>{
+  if(e.target === e.currentTarget) closeDlModal();
+});
+
+function copyKey(){
+  const key = document.getElementById('dlKeyValue').textContent;
+  navigator.clipboard.writeText(key).then(()=>{
+    const btn = document.getElementById('dlCopyBtn');
+    const txt = document.getElementById('dlCopyTxt');
+    btn.classList.add('copied');
+    txt.textContent = '✓ Скопировано';
+    setTimeout(()=>{ btn.classList.remove('copied'); txt.textContent='Скопировать'; }, 2200);
+    showToast('Ключ скопирован в буфер обмена','success',2000);
+  }).catch(()=>{
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = key; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('Ключ скопирован','success',2000);
+  });
+}
+
+function trackDl(platform){
+  console.log('Download:', platform);
+  showToast(`Открываем ${platform === 'apk' ? 'APK' : platform === 'gplay' ? 'Google Play' : platform === 'windows' ? 'Windows' : 'App Store'}...`, 'info', 2000);
+}
+</script>
+
 </body>
 </html>

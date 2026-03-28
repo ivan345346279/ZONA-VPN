@@ -1,0 +1,54 @@
+<div class="form-grid">
+  <div class="form-group">
+    <label>Название тарифа *</label>
+    <input name="name" required placeholder="Например: Про"/>
+  </div>
+  <div class="form-group">
+    <label>Цена (0 = бесплатно) *</label>
+    <input name="price" type="number" min="0" step="0.01" required placeholder="249"/>
+  </div>
+  <div class="form-group">
+    <label>Период оплаты</label>
+    <select name="period">
+      <option value="month">Месяц</option>
+      <option value="year">Год</option>
+      <option value="week">Неделя</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Валюта</label>
+    <select name="currency">
+      <option value="RUB">RUB (₽)</option>
+      <option value="USD">USD ($)</option>
+      <option value="EUR">EUR (€)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Кол-во устройств</label>
+    <input name="devices" type="number" min="1" max="100" value="1" placeholder="1"/>
+  </div>
+  <div class="form-group">
+    <label>Скорость</label>
+    <input name="speed" placeholder="Без ограничений" value="Без ограничений"/>
+  </div>
+  <div class="form-group">
+    <label>Порядок сортировки</label>
+    <input name="sort_order" type="number" value="0" placeholder="0"/>
+  </div>
+  <div class="form-group full">
+    <label>Возможности (каждая с новой строки)</label>
+    <textarea name="features" rows="5" placeholder="3 устройства&#10;Без логов&#10;Поддержка 24/7&#10;50+ серверов"></textarea>
+  </div>
+  <div class="form-group" style="flex-direction:row;align-items:center;gap:.5rem">
+    <label class="checkbox-row">
+      <input type="checkbox" name="is_popular" value="1"/>
+      <span>⭐ Популярный (выделить)</span>
+    </label>
+  </div>
+  <div class="form-group" style="flex-direction:row;align-items:center;gap:.5rem">
+    <label class="checkbox-row">
+      <input type="checkbox" name="is_active" value="1" checked/>
+      <span>✅ Активен (показывать на сайте)</span>
+    </label>
+  </div>
+</div>

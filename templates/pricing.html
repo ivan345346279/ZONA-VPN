@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Тарифы — {{ settings.site_name }}{% endblock %}
+{% block extra_head %}
+<style>
+.page-hero{
+  padding:130px 5% 50px;text-align:center;
+  background:radial-gradient(ellipse 75% 55% at 50% 0%, color-mix(in srgb,var(--primary) 15%,transparent) 0%, transparent 70%);
+}
+.page-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(1.9rem,5vw,3.2rem);font-weight:900;margin-bottom:.9rem;
+}
+.page-sub{color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto 3rem;line-height:1.7}
+
+.pricing-main{max-width:1120px;margin:0 auto;padding:0 5% 6rem}
+.plan-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.5rem;align-items:start;
+}
+.plan{
+  background:var(--s1);border:1px solid var(--border);border-radius:24px;
+  padding:2rem;position:relative;
+  transition:transform .3s,box-shadow .3s;
+}
+.plan:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.plan.hot{
+  border-color:var(--primary);
+  background:linear-gradient(160deg,var(--s1),color-mix(in srgb,var(--primary) 7%,transparent));
+  box-shadow:0 0 0 1px var(--primary),0 0 50px color-mix(in srgb,var(--primary) 20%,transparent);
+}
+.hot-badge{
+  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;font-size:.7rem;font-weight:700;padding:.3rem 1rem;border-radius:100px;white-space:nowrap;
+}
+.plan-name{font-family:'Unbounded',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.plan-devices{color:var(--muted);font-size:.78rem;margin-bottom:1.5rem}
+.plan-price{margin-bottom:1.5rem}
+.plan-amt{font-family:'Unbounded',sans-serif;font-size:2.7rem;font-weight:900;line-height:1}
+.plan-cur{font-size:.95rem;font-weight:600;vertical-align:super}
+.plan-per{color:var(--muted);font-size:.8rem;margin-top:.1rem}
+.plan-free{font-family:'Unbounded',sans-serif;font-size:1.75rem;color:var(--accent)}
+.speed-badge{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.45rem .75rem;border-radius:8px;margin-bottom:1.5rem;
+  background:color-mix(in srgb,var(--accent) 7%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent) 18%,transparent);
+  color:var(--accent);font-size:.78rem;font-weight:600;
+}
+.plan-feats{list-style:none;margin-bottom:1.75rem}
+.plan-feats li{
+  display:flex;align-items:center;gap:.55rem;padding:.45rem 0;
+  border-bottom:1px solid var(--border);color:var(--muted);font-size:.82rem;
+}
+.plan-feats li:last-child{border:none}
+.plan-feats li .ck{color:var(--accent);font-weight:700;flex-shrink:0}
+.plan-btn{width:100%;padding:.9rem;text-align:center;font-size:.875rem}
+
+/* Skeleton loader */
+.skeleton{
+  background:linear-gradient(90deg,var(--s1) 25%,var(--s2) 50%,var(--s1) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:8px;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Compare */
+.compare{max-width:900px;margin:4rem auto 0;padding:0 5%}
+.compare-title{font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:2rem}
+.compare-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.compare-table th{
+  font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:700;
+  text-align:center;padding:.75rem;color:var(--muted);border-bottom:1px solid var(--border);
+}
+.compare-table th:first-child{text-align:left}
+.compare-table td{padding:.75rem;text-align:center;border-bottom:1px solid var(--border);color:var(--muted)}
+.compare-table td:first-child{text-align:left;color:var(--text);font-weight:500}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:hover td{background:rgba(255,255,255,.02)}
+.ck-ic{color:var(--accent);font-weight:700}
+.x-ic{color:#444}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div data-reveal>
+    <div style="color:var(--primary);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.9rem">Тарифы</div>
+    <h1 class="page-title">Честные цены.<br>
+      <span style="background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Без сюрпризов.</span>
+    </h1>
+    <p class="page-sub">Попробуйте бесплатно — отмените в любой момент</p>
+  </div>
+</div>
+
+<div class="pricing-main">
+  <div class="plan-grid" data-stagger>
+    {% for plan in plans %}
+    <div class="plan{% if plan.is_popular %} hot{% endif %}">
+      {% if plan.is_popular %}<div class="hot-badge">⭐ Лучший выбор</div>{% endif %}
+      <div class="plan-name">{{ plan.name }}</div>
+      <div class="plan-devices">{{ plan.devices }} устр{{ 'ойство' if plan.devices==1 else ('ойства' if plan.devices<5 else 'ойств') }}</div>
+      <div class="plan-price">
+        {% if plan.price == 0 %}
+          <div class="plan-free">Бесплатно</div>
+        {% else %}
+          <div><span class="plan-cur">{{ '₽' if plan.currency=='RUB' else '$' }}</span><span class="plan-amt">{{ plan.price|int }}</span></div>
+          <div class="plan-per">в {{ 'месяц' if plan.period=='month' else plan.period }}</div>
+        {% endif %}
+      </div>
+      <div class="speed-badge">⚡ {{ plan.speed }}</div>
+      <ul class="plan-feats">
+        {% for f in plan.features|from_json %}<li><span class="ck">✓</span>{{ f }}</li>{% endfor %}
+      </ul>
+      {% if user %}
+        <a href="#" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Подключить</span></a>
+      {% else %}
+        <button onclick="openLoginModal()" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Войти и подключить</span></button>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if plans %}
+  <div class="compare" data-reveal>
+    <div class="compare-title">Сравнение планов</div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Функция</th>
+          {% for p in plans %}<th>{{ p.name }}</th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Устройств</td>{% for p in plans %}<td>{{ p.devices }}</td>{% endfor %}</tr>
+        <tr><td>Скорость</td>{% for p in plans %}<td style="font-size:.75rem">{{ p.speed }}</td>{% endfor %}</tr>
+        <tr><td>Без логов</td>{% for p in plans %}<td><span class="ck-ic">✓</span></td>{% endfor %}</tr>
+        <tr><td>Поддержка 24/7</td>{% for p in plans %}<td>{% if p.price>0 %}<span class="ck-ic">✓</span>{% else %}<span class="x-ic">—</span>{% endif %}</td>{% endfor %}</tr>
+        <tr><td>Kill Switch</td>{% for p in plans %}<td>{% if p.price>=249 %}<span class="ck-ic">✓</span>{% else %}<span class="x-ic">—</span>{% endif %}</td>{% endfor %}</tr>
+        <tr><td>Выделенный IP</td>{% for p in plans %}<td>{% if p.price>=749 %}<span class="ck-ic">✓</span>{% else %}<span class="x-ic">—</span>{% endif %}</td>{% endfor %}</tr>
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

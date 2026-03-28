@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Админ-панель — {{ settings.site_name }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --primary:#6C63FF;--accent:#00D4FF;
+  --bg:#0A0B0F;--surface:#12141A;--surface2:#1C1F2B;
+  --border:rgba(255,255,255,0.08);--text:#F0F2FF;--muted:#8B90A0;
+  --danger:#FF4757;--success:#2ED573;--warning:#FFA502
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:260px;min-height:100vh;background:var(--surface);
+  border-right:1px solid var(--border);padding:1.5rem;
+  display:flex;flex-direction:column;gap:2rem;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0
+}
+.sidebar-logo{
+  font-family:'Unbounded',sans-serif;font-size:.95rem;font-weight:800;
+  display:flex;align-items:center;gap:.6rem;padding:.5rem 0
+}
+.logo-icon{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;font-size:.9rem
+}
+.sidebar-section{font-size:.7rem;color:var(--muted);font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
+.sidebar-nav{display:flex;flex-direction:column;gap:.25rem}
+.sidebar-link{
+  display:flex;align-items:center;gap:.75rem;padding:.65rem .85rem;
+  border-radius:10px;color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;
+  cursor:pointer;border:none;background:none;width:100%;text-align:left;
+  transition:all .2s
+}
+.sidebar-link:hover,.sidebar-link.active{background:rgba(108,99,255,.12);color:var(--primary)}
+.sidebar-link .icon{font-size:1rem;width:20px;text-align:center}
+.sidebar-bottom{margin-top:auto}
+.badge{
+  display:inline-flex;align-items:center;padding:.2rem .6rem;
+  border-radius:100px;font-size:.7rem;font-weight:700
+}
+.badge-primary{background:rgba(108,99,255,.2);color:var(--primary)}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 2rem;border-bottom:1px solid var(--border);
+  background:var(--surface);position:sticky;top:0;z-index:50
+}
+.topbar-title{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:700}
+.topbar-actions{display:flex;gap:.75rem}
+
+.content{padding:2rem;overflow-y:auto;flex:1}
+.page{display:none}.page.active{display:block}
+
+/* Cards */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.25rem;margin-bottom:2rem}
+.stat-card{
+  background:var(--surface2);border:1px solid var(--border);border-radius:16px;
+  padding:1.5rem;display:flex;align-items:flex-start;gap:1rem
+}
+.stat-icon{
+  width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0
+}
+.stat-val{font-family:'Unbounded',sans-serif;font-size:1.6rem;font-weight:800;line-height:1}
+.stat-label{color:var(--muted);font-size:.8rem;margin-top:.25rem}
+
+/* Panel */
+.panel{background:var(--surface2);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:1.5rem}
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)
+}
+.panel-title{font-family:'Unbounded',sans-serif;font-size:.95rem;font-weight:700}
+.panel-body{padding:1.5rem}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.875rem}
+th{text-align:left;padding:.75rem 1rem;color:var(--muted);font-weight:600;font-size:.8rem;border-bottom:1px solid var(--border)}
+td{padding:.9rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:.8rem;color:var(--muted);font-weight:600}
+input,select,textarea{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:.65rem .9rem;color:var(--text);font-size:.875rem;font-family:inherit;
+  transition:border-color .2s;outline:none;width:100%
+}
+input:focus,select:focus,textarea:focus{border-color:var(--primary)}
+textarea{resize:vertical;min-height:80px}
+.checkbox-row{display:flex;align-items:center;gap:.5rem;cursor:pointer}
+input[type=checkbox]{width:auto}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.55rem 1.2rem;border-radius:8px;font-size:.8rem;font-weight:600;
+  text-decoration:none;cursor:pointer;border:none;transition:all .2s
+}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.btn-primary:hover{opacity:.85}
+.btn-danger{background:rgba(255,71,87,.15);color:var(--danger);border:1px solid rgba(255,71,87,.3)}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+.btn-sm{padding:.35rem .8rem;font-size:.75rem}
+
+/* Toggle badges */
+.pill{
+  display:inline-flex;padding:.25rem .65rem;border-radius:100px;font-size:.72rem;font-weight:700
+}
+.pill-on{background:rgba(46,213,115,.15);color:var(--success)}
+.pill-off{background:rgba(255,71,87,.15);color:var(--danger)}
+.pill-popular{background:rgba(108,99,255,.2);color:var(--primary)}
+
+/* Flash */
+.flash{
+  padding:.75rem 1rem;border-radius:10px;margin-bottom:1.5rem;
+  background:rgba(46,213,115,.1);border:1px solid rgba(46,213,115,.3);
+  color:var(--success);font-size:.875rem
+}
+
+/* Modal */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  padding:2rem;width:min(600px,95vw);max-height:90vh;overflow-y:auto;
+  position:relative;animation:mIn .25s ease
+}
+@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+
+/* Sidebar mobile */
+@media(max-width:900px){
+  .sidebar{width:60px;padding:.75rem}
+  .sidebar-logo span,.sidebar-link span,.sidebar-section,.sidebar-bottom{display:none}
+  .sidebar-link{justify-content:center;padding:.65rem}
+  .badge{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🛡️</div>
+    <span>Admin</span>
+  </div>
+
+  <div>
+    <div class="sidebar-section">Основное</div>
+    <div class="sidebar-nav">
+      <button class="sidebar-link active" onclick="showPage('dashboard',this)">
+        <span class="icon">📊</span><span>Дашборд</span>
+      </button>
+      <button class="sidebar-link" onclick="showPage('plans',this)">
+        <span class="icon">💰</span><span>Тарифы</span>
+        <span class="badge badge-primary" style="margin-left:auto">{{ plans|length }}</span>
+      </button>
+      <button class="sidebar-link" onclick="showPage('settings',this)">
+        <span class="icon">⚙️</span><span>Настройки</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-nav">
+      <a href="/" target="_blank" class="sidebar-link">
+        <span class="icon">🌐</span><span>Открыть сайт</span>
+      </a>
+      <a href="/admin/logout" class="sidebar-link">
+        <span class="icon">🚪</span><span>Выйти</span>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Дашборд</div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary" onclick="showPage('plans',document.querySelector('[onclick*=plans]'));openAddModal()">+ Добавить тариф</button>
+    </div>
+  </div>
+
+  <div class="content">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}{% for m in messages %}<div class="flash">✅ {{ m }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <!-- ─── Dashboard ─── -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(108,99,255,.15)">👥</div>
+          <div>
+            <div class="stat-val">{{ users_count }}</div>
+            <div class="stat-label">Пользователей</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(0,212,255,.12)">📦</div>
+          <div>
+            <div class="stat-val">{{ plans|length }}</div>
+            <div class="stat-label">Тарифов</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(46,213,115,.12)">✅</div>
+          <div>
+            <div class="stat-val">{{ plans|selectattr('is_active','eq',1)|list|length }}</div>
+            <div class="stat-label">Активных тарифов</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(255,165,2,.12)">⭐</div>
+          <div>
+            <div class="stat-val">{{ plans|selectattr('is_popular','eq',1)|list|length }}</div>
+            <div class="stat-label">Популярных</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Тарифы — быстрый просмотр</div>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('plans',document.querySelectorAll('.sidebar-link')[1])">Все тарифы →</button>
+        </div>
+        <div class="panel-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Название</th><th>Цена</th><th>Устройств</th><th>Статус</th></tr>
+              </thead>
+              <tbody>
+                {% for p in plans %}
+                <tr>
+                  <td style="font-weight:600">{{ p.name }}</td>
+                  <td>{% if p.price == 0 %}Бесплатно{% else %}{{ p.price|int }} {{ p.currency }}{% endif %}</td>
+                  <td>{{ p.devices }}</td>
+                  <td>
+                    <span class="pill {% if p.is_active %}pill-on{% else %}pill-off{% endif %}">
+                      {% if p.is_active %}Активен{% else %}Скрыт{% endif %}
+                    </span>
+                    {% if p.is_popular %}<span class="pill pill-popular" style="margin-left:.3rem">⭐ Топ</span>{% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Plans ─── -->
+    <div class="page" id="page-plans">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Управление тарифами</div>
+          <button class="btn btn-primary" onclick="openAddModal()">+ Новый тариф</button>
+        </div>
+        <div class="panel-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th><th>Название</th><th>Цена</th><th>Устройств</th>
+                  <th>Скорость</th><th>Статус</th><th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in plans %}
+                <tr>
+                  <td style="color:var(--muted)">{{ p.id }}</td>
+                  <td style="font-weight:600">{{ p.name }}</td>
+                  <td>{% if p.price == 0 %}Бесплатно{% else %}{{ p.price|int }} {{ p.currency }}/{{ p.period }}{% endif %}</td>
+                  <td>{{ p.devices }}</td>
+                  <td style="color:var(--muted);font-size:.8rem">{{ p.speed }}</td>
+                  <td>
+                    <span class="pill {% if p.is_active %}pill-on{% else %}pill-off{% endif %}">
+                      {% if p.is_active %}✓ Активен{% else %}✗ Скрыт{% endif %}
+                    </span>
+                  </td>
+                  <td>
+                    <div style="display:flex;gap:.4rem">
+                      <button class="btn btn-ghost btn-sm"
+                        onclick="openEditModal({{ p.id }},'{{ p.name|e }}',{{ p.price }},
+                        '{{ p.period }}','{{ p.currency }}',{{ p.devices }},'{{ p.speed|e }}',
+                        {{ p.features|e }},{{ p.is_popular }},{{ p.is_active }},{{ p.sort_order }})">
+                        ✏️ Изм.
+                      </button>
+                      <form method="POST" action="/admin/plans/delete/{{ p.id }}" onsubmit="return confirm('Удалить тариф?')">
+                        <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Settings ─── -->
+    <div class="page" id="page-settings">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Настройки сайта</div>
+        </div>
+        <div class="panel-body">
+          <form method="POST" action="/admin/settings">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Название сайта</label>
+                <input name="site_name" value="{{ settings.site_name }}"/>
+              </div>
+              <div class="form-group">
+                <label>Бейдж в герое</label>
+                <input name="hero_badge" value="{{ settings.hero_badge }}"/>
+              </div>
+              <div class="form-group full">
+                <label>Заголовок героя</label>
+                <input name="hero_title" value="{{ settings.hero_title }}"/>
+              </div>
+              <div class="form-group full">
+                <label>Подзаголовок героя</label>
+                <textarea name="hero_subtitle">{{ settings.hero_subtitle }}</textarea>
+              </div>
+              <div class="form-group">
+                <label>🤖 Username бота Telegram</label>
+                <input name="bot_username" value="{{ settings.get('bot_username','') }}" placeholder="MyVpnBot (без @)"/>
+              </div>
+              <div class="form-group">
+                <label>🔑 Токен бота Telegram</label>
+                <input name="bot_token" type="password" value="{{ settings.get('bot_token','') }}" placeholder="110201543:AAHdqTcvCH..."/>
+              </div>
+              <div class="form-group">
+                <label>Основной цвет (hex)</label>
+                <div style="display:flex;gap:.5rem;align-items:center">
+                  <input type="color" name="primary_color" value="{{ settings.primary_color }}" style="width:50px;padding:.2rem;cursor:pointer"/>
+                  <input name="primary_color_txt" value="{{ settings.primary_color }}" placeholder="#6C63FF" oninput="syncColor(this,'primary_color')"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Акцентный цвет (hex)</label>
+                <div style="display:flex;gap:.5rem;align-items:center">
+                  <input type="color" name="accent_color" value="{{ settings.accent_color }}" style="width:50px;padding:.2rem;cursor:pointer"/>
+                  <input name="accent_color_txt" value="{{ settings.accent_color }}" placeholder="#00D4FF" oninput="syncColor(this,'accent_color')"/>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:1.5rem">
+              <button type="submit" class="btn btn-primary">💾 Сохранить настройки</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Telegram Бот</div></div>
+        <div class="panel-body">
+          <p style="color:var(--muted);font-size:.875rem;line-height:1.7;margin-bottom:1rem">
+            Для включения реальной авторизации через Telegram:
+          </p>
+          <ol style="color:var(--muted);font-size:.85rem;line-height:2;padding-left:1.25rem">
+            <li>Создайте бота у <strong style="color:var(--text)">@BotFather</strong> → получите <code style="background:var(--surface);padding:.1rem .4rem;border-radius:4px">BOT_TOKEN</code></li>
+            <li>Добавьте домен через <code style="background:var(--surface);padding:.1rem .4rem;border-radius:4px">/setdomain</code> в BotFather</li>
+            <li>Установите переменную окружения <code style="background:var(--surface);padding:.1rem .4rem;border-radius:4px">TELEGRAM_BOT_TOKEN=your_token</code></li>
+            <li>В <code style="background:var(--surface);padding:.1rem .4rem;border-radius:4px">base.html</code> замените <code>BOT_NAME</code> на username вашего бота</li>
+            <li>Раскомментируйте блок <em>Real Telegram Widget</em> в JS</li>
+          </ol>
+          <div style="margin-top:1rem;padding:.75rem;background:rgba(255,165,2,.08);border:1px solid rgba(255,165,2,.2);border-radius:10px;font-size:.8rem;color:#FFA502">
+            ⚠️ Сейчас работает Demo-режим (вход без реального Telegram)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Plan Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('addModal').classList.remove('open')">✕</button>
+    <div class="modal-title">Добавить тариф</div>
+    <form method="POST" action="/admin/plans/add">
+      {% include 'plan_form.html' %}
+      <div style="margin-top:1.5rem;display:flex;gap:.75rem">
+        <button type="submit" class="btn btn-primary">✅ Добавить тариф</button>
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('addModal').classList.remove('open')">Отмена</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Plan Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('editModal').classList.remove('open')">✕</button>
+    <div class="modal-title">Редактировать тариф</div>
+    <form method="POST" id="editForm">
+      {% include 'plan_form.html' %}
+      <div style="margin-top:1.5rem;display:flex;gap:.75rem">
+        <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('editModal').classList.remove('open')">Отмена</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn){ btn.classList.add('active') }
+  const titles = {dashboard:'Дашборд',plans:'Управление тарифами',settings:'Настройки'};
+  document.getElementById('pageTitle').textContent = titles[id]||id;
+}
+
+function openAddModal(){
+  const f = document.querySelector('#addModal form');
+  f.reset();
+  document.getElementById('addModal').classList.add('open');
+  showPage('plans', document.querySelectorAll('.sidebar-link')[1]);
+}
+
+function openEditModal(id,name,price,period,currency,devices,speed,features,popular,active,sort){
+  const form = document.getElementById('editForm');
+  form.action = '/admin/plans/edit/'+id;
+  form.elements['name'].value = name;
+  form.elements['price'].value = price;
+  form.elements['period'].value = period;
+  form.elements['currency'].value = currency;
+  form.elements['devices'].value = devices;
+  form.elements['speed'].value = speed;
+  form.elements['features'].value = (features||[]).join('\n');
+  form.elements['is_popular'].checked = !!popular;
+  form.elements['is_active'].checked = !!active;
+  form.elements['sort_order'].value = sort||0;
+  document.getElementById('editModal').classList.add('open');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+});
+
+function syncColor(input, name){
+  const form = input.closest('form');
+  if(form && form.elements[name]) form.elements[name].value = input.value;
+}
+
+// Auto-flash dismiss
+setTimeout(()=>document.querySelectorAll('.flash').forEach(el=>el.remove()), 4000);
+</script>
+</body>
+</html>

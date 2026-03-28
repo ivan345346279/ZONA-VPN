@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+{% block title %}{{ settings.site_name }} — Защита в сети{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ── HERO ─────────────────────────────────────────────── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:110px 5% 60px;text-align:center;position:relative;overflow:hidden;
+}
+/* animated mesh gradient */
+.hero-mesh{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% -10%, color-mix(in srgb,var(--primary) 20%,transparent) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 85% 85%,  color-mix(in srgb,var(--accent)  14%,transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 35% at 10% 70%,  color-mix(in srgb,var(--primary) 10%,transparent) 0%, transparent 55%);
+  animation:meshShift 12s ease-in-out infinite alternate;
+}
+@keyframes meshShift{
+  0%  {filter:hue-rotate(0deg)}
+  100%{filter:hue-rotate(30deg)}
+}
+
+/* dot grid */
+.hero-dots{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse 80% 70% at 50% 40%, black 10%, transparent 85%);
+}
+
+/* floating shapes */
+.shape{
+  position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;z-index:0;
+  animation:shapeFloat 10s ease-in-out infinite;
+}
+.s1{width:450px;height:450px;background:color-mix(in srgb,var(--primary) 14%,transparent);top:-150px;left:-100px}
+.s2{width:320px;height:320px;background:color-mix(in srgb,var(--accent) 12%,transparent);bottom:-80px;right:-60px;animation-delay:-5s;animation-duration:13s}
+.s3{width:200px;height:200px;background:color-mix(in srgb,var(--primary) 8%, transparent);top:40%;left:5%;animation-delay:-3s;animation-duration:8s}
+@keyframes shapeFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%    {transform:translateY(-30px) scale(1.04)}
+}
+
+.hero-content{position:relative;z-index:1;max-width:840px;margin:0 auto}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.45rem 1.25rem;border-radius:100px;margin-bottom:2rem;
+  background:color-mix(in srgb,var(--primary) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--primary) 35%,transparent);
+  font-size:.78rem;color:var(--primary);font-weight:700;letter-spacing:.06em;
+  animation:badgePop .8s .2s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes badgePop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+
+.hero-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(2.4rem,7vw,5rem);
+  font-weight:900;line-height:1.05;letter-spacing:-.02em;
+  margin-bottom:1.5rem;
+  animation:titleUp .9s .35s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes titleUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.grad{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-sub{
+  color:var(--muted);font-size:1.1rem;line-height:1.75;
+  max-width:520px;margin:0 auto 2.5rem;
+  animation:titleUp .9s .5s cubic-bezier(.22,1,.36,1) both;
+}
+
+.hero-cta{
+  display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+  margin-bottom:4rem;
+  animation:titleUp .9s .65s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-cta .btn{padding:.9rem 2rem;font-size:.95rem}
+
+/* stats bar */
+.stats{
+  display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap;
+  padding:1.5rem 2rem;border-radius:20px;
+  background:rgba(255,255,255,.025);border:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  animation:titleUp .9s .8s cubic-bezier(.22,1,.36,1) both;
+}
+.stat{text-align:center}
+.stat-val{
+  font-family:'Unbounded',sans-serif;font-size:1.8rem;font-weight:900;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-lbl{color:var(--muted);font-size:.75rem;margin-top:.15rem;font-weight:500}
+
+/* ── SECTION COMMON ───────────────────────────────────── */
+.section{padding:6rem 5%;max-width:1200px;margin:0 auto}
+.s-label{color:var(--primary);font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem}
+.s-title{font-family:'Unbounded',sans-serif;font-size:clamp(1.7rem,4vw,2.7rem);font-weight:800;line-height:1.15;margin-bottom:.9rem}
+.s-sub{color:var(--muted);font-size:.95rem;max-width:500px;line-height:1.75}
+
+/* ── FEATURES ─────────────────────────────────────────── */
+.feat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:1.25rem;margin-top:3.5rem;
+}
+.feat-card{
+  background:var(--s1);border:1px solid var(--border);border-radius:20px;
+  padding:1.75rem;position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;cursor:default;
+}
+.feat-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 0%, color-mix(in srgb,var(--primary) 10%,transparent), transparent 60%);
+  opacity:0;transition:opacity .4s;
+}
+.feat-card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--primary) 40%,transparent);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.feat-card:hover::before{opacity:1}
+.feat-icon{
+  width:50px;height:50px;border-radius:14px;font-size:1.4rem;
+  background:color-mix(in srgb,var(--primary) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--primary) 20%,transparent);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.1rem;transition:transform .3s;
+}
+.feat-card:hover .feat-icon{transform:scale(1.12) rotate(-5deg)}
+.feat-name{font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.5rem}
+.feat-desc{color:var(--muted);font-size:.825rem;line-height:1.7}
+
+/* ── HOW IT WORKS ─────────────────────────────────────── */
+.steps-wrap{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:2rem;margin-top:3.5rem;position:relative;
+}
+/* connecting line */
+.steps-wrap::before{
+  content:'';position:absolute;top:52px;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),var(--primary),var(--border),transparent);
+  z-index:0;
+}
+@media(max-width:640px){.steps-wrap::before{display:none}}
+.step{text-align:center;position:relative;z-index:1}
+.step-num{
+  width:52px;height:52px;border-radius:50%;margin:0 auto 1.1rem;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Unbounded',sans-serif;font-weight:800;font-size:1rem;
+  box-shadow:0 0 25px color-mix(in srgb,var(--primary) 40%,transparent);
+  transition:transform .3s,box-shadow .3s;
+}
+.step:hover .step-num{transform:scale(1.12);box-shadow:0 0 40px color-mix(in srgb,var(--primary) 55%,transparent)}
+.step-title{font-family:'Unbounded',sans-serif;font-size:.875rem;font-weight:700;margin-bottom:.5rem}
+.step-desc{color:var(--muted);font-size:.8rem;line-height:1.7}
+
+/* ── PRICING ──────────────────────────────────────────── */
+.pricing-wrap{padding:5rem 5%;overflow:hidden}
+.plan-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:1.25rem;max-width:1100px;margin:3.5rem auto 0;align-items:start;
+}
+.plan{
+  background:var(--s1);border:1px solid var(--border);border-radius:22px;
+  padding:1.75rem;position:relative;
+  transition:transform .3s,box-shadow .3s;
+}
+.plan:hover{transform:translateY(-6px)}
+.plan.hot{
+  border-color:var(--primary);
+  background:linear-gradient(160deg,var(--s1),color-mix(in srgb,var(--primary) 6%,transparent));
+  box-shadow:0 0 0 1px var(--primary),0 0 50px color-mix(in srgb,var(--primary) 18%,transparent);
+}
+.hot-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;font-size:.7rem;font-weight:700;padding:.3rem 1rem;border-radius:100px;white-space:nowrap;
+}
+.plan-name{font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:1.25rem}
+.plan-price{margin-bottom:1.5rem}
+.plan-amt{font-family:'Unbounded',sans-serif;font-size:2.4rem;font-weight:900;line-height:1}
+.plan-cur{font-size:.95rem;font-weight:600;vertical-align:super}
+.plan-per{color:var(--muted);font-size:.8rem;margin-top:.15rem}
+.plan-free{font-family:'Unbounded',sans-serif;font-size:1.6rem;color:var(--accent)}
+.plan-feats{list-style:none;margin-bottom:1.75rem}
+.plan-feats li{
+  display:flex;align-items:center;gap:.55rem;padding:.45rem 0;
+  border-bottom:1px solid var(--border);color:var(--muted);font-size:.825rem;
+}
+.plan-feats li:last-child{border:none}
+.plan-feats li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.plan-btn{width:100%;padding:.85rem;text-align:center}
+
+/* ── CTA BANNER ──────────────────────────────────────── */
+.cta-wrap{margin:4rem 5%;border-radius:28px;padding:4.5rem 5%;text-align:center;
+  background:linear-gradient(135deg,
+    color-mix(in srgb,var(--primary) 18%,transparent),
+    color-mix(in srgb,var(--accent)  10%,transparent));
+  border:1px solid color-mix(in srgb,var(--primary) 25%,transparent);
+  position:relative;overflow:hidden;
+}
+.cta-ring{
+  position:absolute;inset:-20%;border-radius:50%;
+  border:1px solid color-mix(in srgb,var(--primary) 12%,transparent);
+  animation:ctaSpin 25s linear infinite;
+}
+.cta-ring:nth-child(2){inset:-30%;animation-duration:35s;animation-direction:reverse}
+@keyframes ctaSpin{to{transform:rotate(360deg)}}
+.cta-content{position:relative;z-index:1}
+.cta-title{font-family:'Unbounded',sans-serif;font-size:clamp(1.5rem,4vw,2.4rem);font-weight:900;margin-bottom:.9rem}
+.cta-sub{color:var(--muted);margin-bottom:2rem;font-size:.95rem}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.cta-btns .btn{padding:.9rem 2rem;font-size:.95rem}
+
+/* counter animation */
+.counter{display:inline-block}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ══ HERO ════════════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-mesh"></div>
+  <div class="hero-dots"></div>
+  <div class="shape s1"></div>
+  <div class="shape s2"></div>
+  <div class="shape s3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">🛡️ {{ settings.hero_badge or '50 000+ пользователей' }}</div>
+
+    <h1 class="hero-title">
+      {{ settings.hero_title or 'Ваша защита' }}<br>
+      <span class="grad">в интернете</span>
+    </h1>
+
+    <p class="hero-sub">{{ settings.hero_subtitle }}</p>
+
+    <div class="hero-cta">
+      <a href="/pricing" class="btn btn-primary">
+        <span class="btn-text">🚀 Выбрать тариф</span>
+      </a>
+      {% if not user %}
+      <button class="btn btn-ghost" onclick="openLoginModal()">
+        <span class="btn-text">Войти через Telegram</span>
+      </button>
+      {% else %}
+      <a href="/pricing" class="btn btn-ghost"><span class="btn-text">Мои подписки</span></a>
+      {% endif %}
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val"><span class="counter" data-target="50000">0</span>+</div>
+        <div class="stat-lbl">Пользователей</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">99.9<span style="font-size:1.1rem">%</span></div>
+        <div class="stat-lbl">Uptime</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val"><span class="counter" data-target="50">0</span>+</div>
+        <div class="stat-lbl">Серверов</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">0</div>
+        <div class="stat-lbl">Логов</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ═══════════════════════════════════════ -->
+<section class="section" id="features">
+  <div data-reveal>
+    <div class="s-label">Возможности</div>
+    <h2 class="s-title">Почему выбирают нас</h2>
+    <p class="s-sub">Всё для безопасной работы в интернете — в одном сервисе</p>
+  </div>
+
+  <div class="feat-grid" data-stagger>
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-name">Молниеносная скорость</div>
+      <div class="feat-desc">Серверы на 10 Гбит/с каналах. Без ограничений скорости на всех тарифах Pro и выше.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-name">Военное шифрование</div>
+      <div class="feat-desc">AES-256 + ChaCha20. Ваши данные защищены от любых угроз и перехвата.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">👁️</div>
+      <div class="feat-name">Нулевые логи</div>
+      <div class="feat-desc">Мы не записываем вашу активность, IP или данные соединений. Гарантированно.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌍</div>
+      <div class="feat-name">50+ стран</div>
+      <div class="feat-desc">Серверы в 50+ странах. Выберите оптимальный регион в один клик.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📱</div>
+      <div class="feat-name">Все платформы</div>
+      <div class="feat-desc">Windows, macOS, iOS, Android — одна подписка для всех устройств.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎯</div>
+      <div class="feat-name">Kill Switch</div>
+      <div class="feat-desc">Автоматическое отключение интернета при обрыве VPN — полная защита.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ════════════════════════════════════ -->
+<section class="section" style="text-align:center">
+  <div data-reveal>
+    <div class="s-label">Как работает</div>
+    <h2 class="s-title">Просто. Быстро. Надёжно.</h2>
+  </div>
+  <div class="steps-wrap" data-stagger>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Выберите тариф</div>
+      <div class="step-desc">Подберите план. Есть бесплатный пробный период.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Войдите через Telegram</div>
+      <div class="step-desc">Быстрая регистрация без email и пароля.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Скачайте приложение</div>
+      <div class="step-desc">Windows, Android, iOS. Установка за минуту.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Подключитесь</div>
+      <div class="step-desc">Нажмите одну кнопку — VPN активируется мгновенно.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING PREVIEW ════════════════════════════════ -->
+<div class="pricing-wrap">
+  <div style="text-align:center;max-width:600px;margin:0 auto" data-reveal>
+    <div class="s-label">Тарифы</div>
+    <h2 class="s-title">Честные цены</h2>
+    <p class="s-sub" style="margin:0 auto">Без скрытых платежей. Выберите свой план.</p>
+  </div>
+
+  <div class="plan-grid" data-stagger>
+    {% for plan in plans %}
+    <div class="plan{% if plan.is_popular %} hot{% endif %}">
+      {% if plan.is_popular %}<div class="hot-badge">⭐ Популярный</div>{% endif %}
+      <div class="plan-name">{{ plan.name }}</div>
+      <div class="plan-price">
+        {% if plan.price == 0 %}
+          <div class="plan-free">Бесплатно</div>
+        {% else %}
+          <div><span class="plan-cur">{{ '₽' if plan.currency=='RUB' else '$' }}</span><span class="plan-amt">{{ plan.price|int }}</span></div>
+          <div class="plan-per">в {{ 'месяц' if plan.period=='month' else plan.period }}</div>
+        {% endif %}
+      </div>
+      <ul class="plan-feats">
+        {% for f in plan.features|from_json %}<li>{{ f }}</li>{% endfor %}
+        <li>⚡ {{ plan.speed }}</li>
+      </ul>
+      {% if user %}
+        <a href="#" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Выбрать</span></a>
+      {% else %}
+        <button onclick="openLoginModal()" class="btn btn-{% if plan.is_popular %}primary{% else %}outline{% endif %} plan-btn"><span class="btn-text">Войти и выбрать</span></button>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ══ CTA BANNER ═════════════════════════════════════ -->
+<div class="cta-wrap" data-reveal="scale">
+  <div class="cta-ring"></div>
+  <div class="cta-ring"></div>
+  <div class="cta-content">
+    <h2 class="cta-title">Защититесь прямо сейчас</h2>
+    <p class="cta-sub">Пробный период бесплатно. Отмена в любой момент.</p>
+    <div class="cta-btns">
+      <a href="/pricing" class="btn btn-primary"><span class="btn-text">Начать бесплатно 🚀</span></a>
+      <button onclick="openLoginModal()" class="btn btn-ghost"><span class="btn-text">Войти через Telegram</span></button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ── Animated counters ─────────────────────────────── */
+function animateCounter(el){
+  const target = parseInt(el.dataset.target);
+  const dur    = 1800;
+  const step   = 16;
+  const steps  = dur / step;
+  let   cur    = 0;
+  const inc    = target / steps;
+  const t = setInterval(()=>{
+    cur += inc;
+    if(cur >= target){ cur = target; clearInterval(t); }
+    el.textContent = Math.floor(cur).toLocaleString('ru');
+  }, step);
+}
+
+const counterObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animateCounter(e.target);
+      counterObs.unobserve(e.target);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('.counter').forEach(el=>counterObs.observe(el));
+</script>
+{% endblock %}

@@ -24,7 +24,7 @@ def from_json_filter(value):
         return []
 
 BOT_TOKEN      = os.environ.get("TELEGRAM_BOT_TOKEN", "8665930056:AAEOAuUKw5rEj7-8Lk1VvepkafWiL7p5NRM")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "[eoahirujgvE;AOJETHJKUKRL1223413568466]")
 DATABASE       = os.path.join(BASE_DIR, "vpn.db")
 
 def get_db():
